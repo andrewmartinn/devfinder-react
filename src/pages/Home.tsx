@@ -7,8 +7,8 @@ import { TiWarning } from "react-icons/ti";
 
 const Home: React.FC = () => {
   const [users, setUsers] = useState<User[]>([]);
-  const [error, setError] = useState<boolean>(true);
-  const [loading, setLoading] = useState<boolean>(false);
+  const [error, setError] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(true);
 
   const fetchUsers = async (): Promise<void> => {
     try {
