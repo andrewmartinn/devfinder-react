@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 
 const MotionButton = motion(Button);
 
-const ThemeToggle = () => {
+const ThemeToggle: React.FC = () => {
   const { colorMode, toggleColorMode } = useColorMode();
   return (
     <MotionButton
