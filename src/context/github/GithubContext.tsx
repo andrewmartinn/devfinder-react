@@ -1,5 +1,12 @@
-import { createContext, useCallback, useState } from "react";
-import { GithubContextType, GithubProviderProps, User } from "../../types";
+import { createContext, useCallback, useReducer } from "react";
+import {
+  GithubContextType,
+  GithubInitalState,
+  GithubProviderProps,
+  GithubStateActionType,
+  User,
+} from "../../types";
+import githubReducer from "./GithubReducer";
 
 const GITHUB_BASE_URL = "https://api.github.com";
 const GITHUB_AUTH_TOKEN = import.meta.env.VITE_APP_GITHUB_API_TOKEN;
@@ -9,11 +16,15 @@ export const GithubContext = createContext<GithubContextType | undefined>(
 );
 
 const GithubProvider: React.FC<GithubProviderProps> = ({ children }) => {
-  const [users, setUsers] = useState<User[]>([]);
-  const [error, setError] = useState<boolean>(false);
-  const [loading, setLoading] = useState<boolean>(true);
+  const initalState: GithubInitalState = {
+    users: [],
+    error: false,
+    loading: false,
+  };
+  const [state, dispatch] = useReducer(githubReducer, initalState);
 
   const fetchUsers = useCallback(async (): Promise<void> => {
+    dispatch({ type: GithubStateActionType.SET_LOADING });
     try {
       const response = await fetch(`${GITHUB_BASE_URL}/users`, {
         headers: {
@@ -24,19 +35,23 @@ const GithubProvider: React.FC<GithubProviderProps> = ({ children }) => {
         throw new Error("Failed to fetch users!");
       }
       const data: User[] = await response.json();
-      setUsers(data);
-      setLoading(false);
-      setError(false);
+      dispatch({ type: GithubStateActionType.GET_USERS, payload: data });
       console.log(data);
     } catch (error) {
-      setError(true);
-      setLoading(false);
+      dispatch({ type: GithubStateActionType.SET_ERROR });
       console.error("Failed to fetch users", error);
     }
   }, []);
 
   return (
-    <GithubContext.Provider value={{ users, loading, error, fetchUsers }}>
+    <GithubContext.Provider
+      value={{
+        users: state.users,
+        loading: state.loading,
+        error: state.error,
+        fetchUsers,
+      }}
+    >
       {children}
     </GithubContext.Provider>
   );

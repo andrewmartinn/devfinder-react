@@ -19,13 +19,37 @@ export interface User {
   site_admin: boolean;
 }
 
-export interface GithubContextType {
+export interface GithubInitalState {
   users: User[];
-  error: boolean;
   loading: boolean;
+  error: boolean;
+}
+
+export interface GithubContextType extends GithubInitalState {
   fetchUsers: () => Promise<void>;
 }
 
 export interface GithubProviderProps {
   children: React.ReactNode;
 }
+
+export enum GithubStateActionType {
+  GET_USERS = "GET_USERS",
+  SET_ERROR = "SET_ERROR",
+  SET_LOADING = "SET_LOADING",
+}
+
+interface GetUsersAction {
+  type: GithubStateActionType.GET_USERS;
+  payload: User[];
+}
+
+interface SetLoading {
+  type: GithubStateActionType.SET_LOADING;
+}
+
+interface SetError {
+  type: GithubStateActionType.SET_ERROR;
+}
+
+export type GithubAction = GetUsersAction | SetLoading | SetError;
