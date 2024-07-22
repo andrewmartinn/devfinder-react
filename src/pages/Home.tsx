@@ -4,6 +4,7 @@ import { useEffect } from "react";
 import Loading from "../components/common/Loading";
 import { TiWarning } from "react-icons/ti";
 import useGithubContext from "../hooks/useGithubContext";
+import SearchBar from "../components/search/SearchBar";
 
 const Home: React.FC = () => {
   const { users, error, loading, fetchUsers } = useGithubContext();
@@ -39,7 +40,7 @@ const Home: React.FC = () => {
 
   return (
     <Box>
-      Search Bar
+      <SearchBar />
       <UserResults users={users} />
     </Box>
   );
