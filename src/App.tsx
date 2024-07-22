@@ -2,6 +2,7 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import UserDetails from "./pages/UserDetails";
 import Home from "./pages/Home";
 import RootLayout from "./layout/RootLayout";
+import GithubProvider from "./context/github/GithubContext";
 
 const router = createBrowserRouter([
   {
@@ -12,7 +13,7 @@ const router = createBrowserRouter([
         element: <Home />,
       },
       {
-        path: "/user/:username",
+        path: "/users/:username",
         element: <UserDetails />,
       },
     ],
@@ -20,6 +21,10 @@ const router = createBrowserRouter([
 ]);
 
 const App: React.FC = () => {
-  return <RouterProvider router={router} />;
+  return (
+    <GithubProvider>
+      <RouterProvider router={router} />
+    </GithubProvider>
+  );
 };
 export default App;

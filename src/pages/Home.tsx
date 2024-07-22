@@ -1,40 +1,16 @@
 import { AbsoluteCenter, Box, Text } from "@chakra-ui/react";
 import UserResults from "../components/users/UserResults";
-import { useEffect, useState } from "react";
-import { User } from "../types";
+import { useEffect } from "react";
 import Loading from "../components/common/Loading";
 import { TiWarning } from "react-icons/ti";
+import useGithubContext from "../hooks/useGithubContext";
 
 const Home: React.FC = () => {
-  const [users, setUsers] = useState<User[]>([]);
-  const [error, setError] = useState<boolean>(false);
-  const [loading, setLoading] = useState<boolean>(true);
-
-  const fetchUsers = async (): Promise<void> => {
-    try {
-      const response = await fetch("https://api.github.com/users", {
-        headers: {
-          Authorization: `token ${import.meta.env.VITE_APP_GITHUB_API_TOKEN}`,
-        },
-      });
-      if (!response.ok) {
-        throw new Error("Failed to fetch users!");
-      }
-      const data: User[] = await response.json();
-      setUsers(data);
-      setLoading(false);
-      setError(false);
-      console.log(data);
-    } catch (error) {
-      setError(true);
-      setLoading(false);
-      console.error("Failed to fetch users", error);
-    }
-  };
+  const { users, error, loading, fetchUsers } = useGithubContext();
 
   useEffect(() => {
     fetchUsers();
-  }, []);
+  }, [fetchUsers]);
 
   if (error) {
     return (

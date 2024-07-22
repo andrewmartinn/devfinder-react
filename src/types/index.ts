@@ -18,3 +18,14 @@ export interface User {
   type: string;
   site_admin: boolean;
 }
+
+export interface GithubContextType {
+  users: User[];
+  error: boolean;
+  loading: boolean;
+  fetchUsers: () => Promise<void>;
+}
+
+export interface GithubProviderProps {
+  children: React.ReactNode;
+}
