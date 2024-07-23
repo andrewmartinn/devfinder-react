@@ -11,17 +11,19 @@ import colors from "../../theme/colors";
 import { FiSearch } from "react-icons/fi";
 import { IoCloseCircleOutline } from "react-icons/io5";
 import { useState } from "react";
+import useGithubContext from "../../hooks/useGithubContext";
 
 const SearchBar: React.FC = () => {
+  const { searchUsers } = useGithubContext();
   const [text, setText] = useState<string>("");
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
 
     if (text) {
-      console.log("SUCCESS: form submitted successfully");
+      const params = new URLSearchParams({ q: text });
+      searchUsers(params);
       setText("");
-      // TODO: Search functionality
     } else {
       alert("ERROR: Please enter a username to search!");
     }

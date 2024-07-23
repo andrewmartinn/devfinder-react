@@ -17,8 +17,8 @@ export interface User {
   received_events_url: string;
   type: string;
   site_admin: boolean;
+  score: number;
 }
-
 export interface GithubInitalState {
   users: User[];
   loading: boolean;
@@ -26,7 +26,7 @@ export interface GithubInitalState {
 }
 
 export interface GithubContextType extends GithubInitalState {
-  fetchUsers: () => Promise<void>;
+  searchUsers: (query: URLSearchParams) => Promise<void>;
 }
 
 export interface GithubProviderProps {
@@ -53,3 +53,9 @@ interface SetError {
 }
 
 export type GithubAction = GetUsersAction | SetLoading | SetError;
+
+export interface GithubAPISearchResponse {
+  incomplete_results: boolean;
+  items: User[];
+  total_count: number;
+}

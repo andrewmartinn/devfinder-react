@@ -1,10 +1,10 @@
-import { createContext, useCallback, useReducer } from "react";
+import { createContext, useReducer } from "react";
 import {
+  GithubAPISearchResponse,
   GithubContextType,
   GithubInitalState,
   GithubProviderProps,
   GithubStateActionType,
-  User,
 } from "../../types";
 import githubReducer from "./GithubReducer";
 
@@ -23,25 +23,29 @@ const GithubProvider: React.FC<GithubProviderProps> = ({ children }) => {
   };
   const [state, dispatch] = useReducer(githubReducer, initalState);
 
-  const fetchUsers = useCallback(async (): Promise<void> => {
+  const searchUsers = async (query: URLSearchParams): Promise<void> => {
     dispatch({ type: GithubStateActionType.SET_LOADING });
     try {
-      const response = await fetch(`${GITHUB_BASE_URL}/users`, {
-        headers: {
-          Authorization: `token ${GITHUB_AUTH_TOKEN}`,
-        },
-      });
+      console.log("searching users from context");
+      const response = await fetch(
+        `${GITHUB_BASE_URL}/search/users?${query.toString()}`,
+        {
+          headers: {
+            Authorization: `token ${GITHUB_AUTH_TOKEN}`,
+          },
+        }
+      );
       if (!response.ok) {
-        throw new Error("Failed to fetch users!");
+        throw new Error("ERROR: Failed to users");
       }
-      const data: User[] = await response.json();
-      dispatch({ type: GithubStateActionType.GET_USERS, payload: data });
+      const data: GithubAPISearchResponse = await response.json();
       console.log(data);
+      dispatch({ type: GithubStateActionType.GET_USERS, payload: data.items });
     } catch (error) {
       dispatch({ type: GithubStateActionType.SET_ERROR });
-      console.error("Failed to fetch users", error);
+      console.error("ERROR: Failed to fetch data", error);
     }
-  }, []);
+  };
 
   return (
     <GithubContext.Provider
@@ -49,7 +53,7 @@ const GithubProvider: React.FC<GithubProviderProps> = ({ children }) => {
         users: state.users,
         loading: state.loading,
         error: state.error,
-        fetchUsers,
+        searchUsers,
       }}
     >
       {children}
