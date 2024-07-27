@@ -5,6 +5,7 @@ import {
   InputGroup,
   InputLeftElement,
   InputRightElement,
+  Text,
   useColorModeValue,
 } from "@chakra-ui/react";
 import colors from "../../theme/colors";
@@ -12,9 +13,11 @@ import { FiSearch } from "react-icons/fi";
 import { IoCloseCircleOutline } from "react-icons/io5";
 import { useState } from "react";
 import useGithubContext from "../../hooks/useGithubContext";
+import useToastServiceContext from "../../hooks/useToastServiceContext";
 
 const SearchBar: React.FC = () => {
-  const { searchUsers } = useGithubContext();
+  const { users, searchUsers, resetSearchResults } = useGithubContext();
+  const { addToast } = useToastServiceContext();
   const [text, setText] = useState<string>("");
 
   const handleSearch = (e: React.FormEvent) => {
@@ -25,7 +28,12 @@ const SearchBar: React.FC = () => {
       searchUsers(params);
       setText("");
     } else {
-      alert("ERROR: Please enter a username to search!");
+      addToast({
+        title: "Error",
+        description: "Please enter a valid username to search!",
+        status: "error",
+        duration: 5000,
+      });
     }
   };
 
@@ -76,6 +84,17 @@ const SearchBar: React.FC = () => {
           </InputRightElement>
         </InputGroup>
       </form>
+      {users.length > 0 && (
+        <Text
+          my={"4"}
+          cursor={"pointer"}
+          fontSize={"sm"}
+          fontWeight={"700"}
+          onClick={resetSearchResults}
+        >
+          RESET
+        </Text>
+      )}
     </Box>
   );
 };

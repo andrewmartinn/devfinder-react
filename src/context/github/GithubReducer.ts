@@ -1,17 +1,19 @@
 import {
   GithubAction,
-  GithubInitalState,
+  GithubInitialState,
   GithubStateActionType,
 } from "../../types";
 
-const githubReducer = (state: GithubInitalState, action: GithubAction) => {
+const githubReducer = (state: GithubInitialState, action: GithubAction) => {
   switch (action.type) {
     case GithubStateActionType.GET_USERS:
       return { ...state, users: action.payload, loading: false, error: false };
     case GithubStateActionType.SET_LOADING:
-      return { ...state, loading: true, error: false };
+      return { ...state, loading: true };
     case GithubStateActionType.SET_ERROR:
-      return { ...state, error: true, loading: false };
+      return { ...state, loading: false, error: true };
+    case GithubStateActionType.RESET_SEARCH:
+      return { ...state, users: [] };
     default:
       return state;
   }

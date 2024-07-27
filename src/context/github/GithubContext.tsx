@@ -2,7 +2,7 @@ import { createContext, useReducer } from "react";
 import {
   GithubAPISearchResponse,
   GithubContextType,
-  GithubInitalState,
+  GithubInitialState,
   GithubProviderProps,
   GithubStateActionType,
 } from "../../types";
@@ -16,17 +16,16 @@ export const GithubContext = createContext<GithubContextType | undefined>(
 );
 
 const GithubProvider: React.FC<GithubProviderProps> = ({ children }) => {
-  const initalState: GithubInitalState = {
+  const initialState: GithubInitialState = {
     users: [],
     error: false,
     loading: false,
   };
-  const [state, dispatch] = useReducer(githubReducer, initalState);
+  const [state, dispatch] = useReducer(githubReducer, initialState);
 
   const searchUsers = async (query: URLSearchParams): Promise<void> => {
     dispatch({ type: GithubStateActionType.SET_LOADING });
     try {
-      console.log("searching users from context");
       const response = await fetch(
         `${GITHUB_BASE_URL}/search/users?${query.toString()}`,
         {
@@ -47,6 +46,10 @@ const GithubProvider: React.FC<GithubProviderProps> = ({ children }) => {
     }
   };
 
+  const resetSearchResults = () => {
+    dispatch({ type: GithubStateActionType.RESET_SEARCH });
+  };
+
   return (
     <GithubContext.Provider
       value={{
@@ -54,6 +57,7 @@ const GithubProvider: React.FC<GithubProviderProps> = ({ children }) => {
         loading: state.loading,
         error: state.error,
         searchUsers,
+        resetSearchResults,
       }}
     >
       {children}
