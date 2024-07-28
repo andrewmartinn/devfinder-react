@@ -40,7 +40,7 @@ const UserCard: React.FC<UserCardProps> = ({ user }) => {
           as={Link}
           display={"flex"}
           my={"2"}
-          to={`users/${user.login}`}
+          to={`user/${user.login}`}
           textTransform={"uppercase"}
           alignItems={"center"}
           gap={1}

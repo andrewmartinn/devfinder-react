@@ -8,6 +8,8 @@ const githubReducer = (state: GithubInitialState, action: GithubAction) => {
   switch (action.type) {
     case GithubStateActionType.GET_USERS:
       return { ...state, users: action.payload, loading: false, error: false };
+    case GithubStateActionType.GET_SELECTED_USER:
+      return { ...state, selectedUser: action.payload, loading: false };
     case GithubStateActionType.SET_LOADING:
       return { ...state, loading: true };
     case GithubStateActionType.SET_ERROR:

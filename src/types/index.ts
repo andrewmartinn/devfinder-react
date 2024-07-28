@@ -22,6 +22,23 @@ export interface User {
   score: number;
 }
 
+export interface UserDetails extends Omit<User, "score"> {
+  name: string;
+  company: string;
+  blog: string;
+  location: string;
+  email: string | null;
+  hireable: boolean | null;
+  bio: string;
+  twitter_username: string | null;
+  public_repos: number;
+  public_gists: number;
+  followers: number;
+  following: number;
+  created_at: string;
+  updated_at: string;
+}
+
 export interface GithubAPISearchResponse {
   incomplete_results: boolean;
   items: User[];
@@ -30,12 +47,14 @@ export interface GithubAPISearchResponse {
 
 export interface GithubInitialState {
   users: User[];
+  selectedUser: UserDetails | Record<string, never>;
   loading: boolean;
   error: boolean;
 }
 
 export interface GithubContextType extends GithubInitialState {
   searchUsers: (query: URLSearchParams) => Promise<void>;
+  getUser: (username: string) => Promise<void>;
   resetSearchResults: () => void;
 }
 
@@ -45,12 +64,13 @@ export interface GithubProviderProps {
 
 export enum GithubStateActionType {
   GET_USERS = "GET_USERS",
+  GET_SELECTED_USER = "GET_SELECTED_USER",
   SET_ERROR = "SET_ERROR",
   SET_LOADING = "SET_LOADING",
   RESET_SEARCH = "RESET_SEARCH",
 }
 
-interface GetUsersAction {
+interface GetUsers {
   type: GithubStateActionType.GET_USERS;
   payload: User[];
 }
@@ -66,7 +86,18 @@ interface SetError {
 interface ResetSearch {
   type: GithubStateActionType.RESET_SEARCH;
 }
-export type GithubAction = GetUsersAction | SetLoading | SetError | ResetSearch;
+
+interface GetSelectedUser {
+  type: GithubStateActionType.GET_SELECTED_USER;
+  payload: UserDetails;
+}
+
+export type GithubAction =
+  | GetUsers
+  | SetLoading
+  | SetError
+  | ResetSearch
+  | GetSelectedUser;
 
 export interface ToastServiceContextType {
   addToast: (options: UseToastOptions) => void;

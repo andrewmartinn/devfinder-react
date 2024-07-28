@@ -1,10 +1,11 @@
-import { createContext, useReducer } from "react";
+import { createContext, useCallback, useReducer } from "react";
 import {
   GithubAPISearchResponse,
   GithubContextType,
   GithubInitialState,
   GithubProviderProps,
   GithubStateActionType,
+  UserDetails,
 } from "../../types";
 import githubReducer from "./GithubReducer";
 
@@ -18,6 +19,7 @@ export const GithubContext = createContext<GithubContextType | undefined>(
 const GithubProvider: React.FC<GithubProviderProps> = ({ children }) => {
   const initialState: GithubInitialState = {
     users: [],
+    selectedUser: {},
     error: false,
     loading: false,
   };
@@ -46,6 +48,29 @@ const GithubProvider: React.FC<GithubProviderProps> = ({ children }) => {
     }
   };
 
+  const getUser = useCallback(async (username: string): Promise<void> => {
+    dispatch({ type: GithubStateActionType.SET_LOADING });
+    try {
+      const response = await fetch(`${GITHUB_BASE_URL}/users/${username}`, {
+        headers: {
+          Authorization: `token ${GITHUB_AUTH_TOKEN}`,
+        },
+      });
+      if (!response.ok) {
+        throw new Error("ERROR: Failed to fetch user profile");
+      }
+      const data: UserDetails = await response.json();
+      console.log(data);
+      dispatch({
+        type: GithubStateActionType.GET_SELECTED_USER,
+        payload: data,
+      });
+    } catch (error) {
+      dispatch({ type: GithubStateActionType.SET_ERROR });
+      console.error("ERROR: Failed to fetch data", error);
+    }
+  }, []);
+
   const resetSearchResults = () => {
     dispatch({ type: GithubStateActionType.RESET_SEARCH });
   };
@@ -54,9 +79,11 @@ const GithubProvider: React.FC<GithubProviderProps> = ({ children }) => {
     <GithubContext.Provider
       value={{
         users: state.users,
+        selectedUser: state.selectedUser,
         loading: state.loading,
         error: state.error,
         searchUsers,
+        getUser,
         resetSearchResults,
       }}
     >
