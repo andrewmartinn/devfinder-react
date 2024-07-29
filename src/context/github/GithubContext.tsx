@@ -19,6 +19,7 @@ export const GithubContext = createContext<GithubContextType | undefined>(
 const GithubProvider: React.FC<GithubProviderProps> = ({ children }) => {
   const initialState: GithubInitialState = {
     users: [],
+    hasSearched: false,
     selectedUser: {},
     error: false,
     loading: false,
@@ -45,6 +46,11 @@ const GithubProvider: React.FC<GithubProviderProps> = ({ children }) => {
     } catch (error) {
       dispatch({ type: GithubStateActionType.SET_ERROR });
       console.error("ERROR: Failed to fetch data", error);
+    } finally {
+      dispatch({
+        type: GithubStateActionType.SET_HAS_SEARCHED,
+        payload: true,
+      });
     }
   };
 
@@ -68,6 +74,11 @@ const GithubProvider: React.FC<GithubProviderProps> = ({ children }) => {
     } catch (error) {
       dispatch({ type: GithubStateActionType.SET_ERROR });
       console.error("ERROR: Failed to fetch data", error);
+    } finally {
+      dispatch({
+        type: GithubStateActionType.SET_HAS_SEARCHED,
+        payload: true,
+      });
     }
   }, []);
 
@@ -79,6 +90,7 @@ const GithubProvider: React.FC<GithubProviderProps> = ({ children }) => {
     <GithubContext.Provider
       value={{
         users: state.users,
+        hasSearched: state.hasSearched,
         selectedUser: state.selectedUser,
         loading: state.loading,
         error: state.error,

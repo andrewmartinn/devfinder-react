@@ -6,9 +6,17 @@ import useGithubContext from "../hooks/useGithubContext";
 import SearchBar from "../components/search/SearchBar";
 
 const Home: React.FC = () => {
-  const { users, error, loading } = useGithubContext();
+  const { users, error, loading, hasSearched } = useGithubContext();
 
-  if (error) {
+  if (loading) {
+    return (
+      <AbsoluteCenter>
+        <Loading />
+      </AbsoluteCenter>
+    );
+  }
+
+  if (error && hasSearched) {
     return (
       <AbsoluteCenter>
         <Text
@@ -25,18 +33,10 @@ const Home: React.FC = () => {
     );
   }
 
-  if (loading) {
-    return (
-      <AbsoluteCenter>
-        <Loading />
-      </AbsoluteCenter>
-    );
-  }
-
   return (
     <Box>
       <SearchBar />
-      <UserResults users={users} />
+      <UserResults users={users} hasSearched={hasSearched} />
     </Box>
   );
 };

@@ -15,7 +15,15 @@ const githubReducer = (state: GithubInitialState, action: GithubAction) => {
     case GithubStateActionType.SET_ERROR:
       return { ...state, loading: false, error: true };
     case GithubStateActionType.RESET_SEARCH:
-      return { ...state, users: [] };
+      return {
+        ...state,
+        users: [],
+        loading: false,
+        error: false,
+        hasSearched: false,
+      };
+    case GithubStateActionType.SET_HAS_SEARCHED:
+      return { ...state, hasSearched: action.payload };
     default:
       return state;
   }

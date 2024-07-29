@@ -47,6 +47,7 @@ export interface GithubAPISearchResponse {
 
 export interface GithubInitialState {
   users: User[];
+  hasSearched: boolean;
   selectedUser: UserDetails | Record<string, never>;
   loading: boolean;
   error: boolean;
@@ -68,6 +69,7 @@ export enum GithubStateActionType {
   SET_ERROR = "SET_ERROR",
   SET_LOADING = "SET_LOADING",
   RESET_SEARCH = "RESET_SEARCH",
+  SET_HAS_SEARCHED = "SET_HAS_SEARCHED",
 }
 
 interface GetUsers {
@@ -92,11 +94,17 @@ interface GetSelectedUser {
   payload: UserDetails;
 }
 
+interface SetHasSearched {
+  type: GithubStateActionType.SET_HAS_SEARCHED;
+  payload: boolean;
+}
+
 export type GithubAction =
   | GetUsers
-  | SetLoading
   | SetError
+  | SetLoading
   | ResetSearch
+  | SetHasSearched
   | GetSelectedUser;
 
 export interface ToastServiceContextType {
