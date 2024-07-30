@@ -25,7 +25,6 @@ const UserSocialCards: React.FC<UserSocialCardsProps> = ({
   website,
   twitterUsername,
 }) => {
-  console.log(location, website, twitterUsername);
   const cardBg = useColorModeValue(colors.gray2, colors.blue2);
 
   return (

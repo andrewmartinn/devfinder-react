@@ -1,5 +1,5 @@
 import colors from "../../theme/colors";
-import { Box, Flex, Grid, Text } from "@chakra-ui/react";
+import { Box, Flex, Grid, Text, useColorModeValue } from "@chakra-ui/react";
 import { motion, Variants } from "framer-motion";
 import { FaPeopleGroup } from "react-icons/fa6";
 import { FaCodepen, FaUserFriends } from "react-icons/fa";
@@ -34,6 +34,9 @@ const UserProfileStats: React.FC<UserProfileStatsProps> = ({
   publicRepos,
   publicGists,
 }) => {
+  const cardBorderColor = useColorModeValue(colors.gray2, colors.blue2);
+  const cardBg = useColorModeValue("white", colors.blue1);
+
   return (
     <Grid
       w={"full"}
@@ -51,7 +54,8 @@ const UserProfileStats: React.FC<UserProfileStatsProps> = ({
         variants={FadeInAnimationVariants}
         justifyContent={"space-between"}
         alignItems={"center"}
-        border={`1px solid ${colors.blue2}`}
+        border={`1px solid ${cardBorderColor}`}
+        bg={cardBg}
         boxShadow={"md"}
         p={"4"}
         borderRadius={"lg"}
@@ -71,7 +75,8 @@ const UserProfileStats: React.FC<UserProfileStatsProps> = ({
         variants={FadeInAnimationVariants}
         justifyContent={"space-between"}
         alignItems={"center"}
-        border={`1px solid ${colors.blue2}`}
+        border={`1px solid ${cardBorderColor}`}
+        bg={cardBg}
         boxShadow={"md"}
         p={"4"}
         borderRadius={"lg"}
@@ -91,7 +96,8 @@ const UserProfileStats: React.FC<UserProfileStatsProps> = ({
         variants={FadeInAnimationVariants}
         justifyContent={"space-between"}
         alignItems={"center"}
-        border={`1px solid ${colors.blue2}`}
+        border={`1px solid ${cardBorderColor}`}
+        bg={cardBg}
         boxShadow={"md"}
         p={"4"}
         borderRadius={"lg"}
@@ -111,7 +117,8 @@ const UserProfileStats: React.FC<UserProfileStatsProps> = ({
         variants={FadeInAnimationVariants}
         justifyContent={"space-between"}
         alignItems={"center"}
-        border={`1px solid ${colors.blue2}`}
+        border={`1px solid ${cardBorderColor}`}
+        bg={cardBg}
         boxShadow={"md"}
         p={"4"}
         borderRadius={"lg"}
