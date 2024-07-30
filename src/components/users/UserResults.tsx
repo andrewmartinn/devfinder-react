@@ -21,7 +21,6 @@ const containerVariants: Variants = {
 };
 
 const UserResults: React.FC<UserResultsProps> = ({ users, hasSearched }) => {
-  console.log(hasSearched, "user results");
   return (
     <>
       <MotionGrid

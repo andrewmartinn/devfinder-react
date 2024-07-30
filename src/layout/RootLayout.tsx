@@ -5,9 +5,9 @@ import colors from "../theme/colors";
 
 const RootLayout: React.FC = () => {
   return (
-    <Box minHeight={"100vh"} bg={useColorModeValue(colors.gray1, colors.blue1)}>
+    <Box bg={useColorModeValue(colors.gray1, colors.blue1)}>
       <Navbar />
-      <Container maxW={"7xl"} my={"10"}>
+      <Container maxW={"7xl"} py={"10"} minH={"100vh"}>
         <Outlet />
       </Container>
     </Box>

@@ -8,16 +8,25 @@ import UserProfileHeader from "../components/user-details/UserProfileHeader";
 import { UserDetails as UserDetailsType } from "../types";
 import { motion } from "framer-motion";
 import UserProfileStats from "../components/user-details/UserProfileStats";
+import UserRepos from "../components/user-details/UserRepos";
 
 const UserDetails: React.FC = () => {
   const { username } = useParams();
-  const { selectedUser, getUser, error, loading } = useGithubContext();
+  const {
+    selectedUser,
+    selectedUserRepos,
+    getUser,
+    getUserRepos,
+    error,
+    loading,
+  } = useGithubContext();
 
   useEffect(() => {
     if (username) {
       getUser(username);
+      getUserRepos(username);
     }
-  }, [getUser, username]);
+  }, [getUser, username, getUserRepos]);
 
   // Type Guard function to ensure selected user is not empty
   const isUserDetails = (user: unknown): user is UserDetailsType => {
@@ -64,6 +73,7 @@ const UserDetails: React.FC = () => {
         publicRepos={selectedUser.public_repos}
         publicGists={selectedUser.public_gists}
       />
+      <UserRepos repos={selectedUserRepos} />
     </MotionStack>
   );
 };

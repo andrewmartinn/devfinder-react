@@ -14,6 +14,15 @@ const githubReducer = (state: GithubInitialState, action: GithubAction) => {
       return { ...state, loading: true };
     case GithubStateActionType.SET_ERROR:
       return { ...state, loading: false, error: true };
+    case GithubStateActionType.SET_HAS_SEARCHED:
+      return { ...state, hasSearched: action.payload };
+    case GithubStateActionType.GET_USER_REPOS:
+      return {
+        ...state,
+        selectedUserRepos: action.payload,
+        loading: false,
+        error: false,
+      };
     case GithubStateActionType.RESET_SEARCH:
       return {
         ...state,
@@ -21,9 +30,8 @@ const githubReducer = (state: GithubInitialState, action: GithubAction) => {
         loading: false,
         error: false,
         hasSearched: false,
+        selectedUserRepos: [],
       };
-    case GithubStateActionType.SET_HAS_SEARCHED:
-      return { ...state, hasSearched: action.payload };
     default:
       return state;
   }

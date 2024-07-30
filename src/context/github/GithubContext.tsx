@@ -6,6 +6,7 @@ import {
   GithubProviderProps,
   GithubStateActionType,
   UserDetails,
+  UserRepo,
 } from "../../types";
 import githubReducer from "./GithubReducer";
 
@@ -21,6 +22,7 @@ const GithubProvider: React.FC<GithubProviderProps> = ({ children }) => {
     users: [],
     hasSearched: false,
     selectedUser: {},
+    selectedUserRepos: [],
     error: false,
     loading: false,
   };
@@ -82,6 +84,35 @@ const GithubProvider: React.FC<GithubProviderProps> = ({ children }) => {
     }
   }, []);
 
+  const getUserRepos = useCallback(async (username: string): Promise<void> => {
+    dispatch({ type: GithubStateActionType.SET_LOADING });
+    try {
+      const params = new URLSearchParams({ sort: "created", per_page: "10" });
+      const response = await fetch(
+        `${GITHUB_BASE_URL}/users/${username}/repos?${params}`,
+        {
+          headers: {
+            Authorization: `token ${GITHUB_AUTH_TOKEN}`,
+          },
+        }
+      );
+      if (!response.ok) {
+        throw new Error("ERROR: Failed to fetch user repos");
+      }
+      const data: UserRepo[] = await response.json();
+      console.log(data);
+      dispatch({ type: GithubStateActionType.GET_USER_REPOS, payload: data });
+    } catch (error) {
+      console.error("ERROR: Failed to fetch data", error);
+      dispatch({ type: GithubStateActionType.SET_ERROR });
+    } finally {
+      dispatch({
+        type: GithubStateActionType.SET_HAS_SEARCHED,
+        payload: true,
+      });
+    }
+  }, []);
+
   const resetSearchResults = () => {
     dispatch({ type: GithubStateActionType.RESET_SEARCH });
   };
@@ -89,13 +120,10 @@ const GithubProvider: React.FC<GithubProviderProps> = ({ children }) => {
   return (
     <GithubContext.Provider
       value={{
-        users: state.users,
-        hasSearched: state.hasSearched,
-        selectedUser: state.selectedUser,
-        loading: state.loading,
-        error: state.error,
+        ...state,
         searchUsers,
         getUser,
+        getUserRepos,
         resetSearchResults,
       }}
     >
