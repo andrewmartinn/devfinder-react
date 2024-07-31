@@ -39,6 +39,14 @@ const SearchBar: React.FC = () => {
 
   return (
     <Box w={{ base: "full", md: "60%" }} mx={"auto"}>
+      <Text
+        textAlign={"center"}
+        py={"4"}
+        fontSize={{ base: "2xl", md: "4xl" }}
+        fontWeight={"700"}
+      >
+        Discover Github Profiles & Users
+      </Text>
       <form onSubmit={handleSearch}>
         <InputGroup position={"relative"}>
           <InputLeftElement position={"absolute"} top={"2"} left={"2"}>

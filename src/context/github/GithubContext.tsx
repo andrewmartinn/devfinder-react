@@ -43,7 +43,6 @@ const GithubProvider: React.FC<GithubProviderProps> = ({ children }) => {
         throw new Error("ERROR: Failed to users");
       }
       const data: GithubAPISearchResponse = await response.json();
-      console.log(data);
       dispatch({ type: GithubStateActionType.GET_USERS, payload: data.items });
     } catch (error) {
       dispatch({ type: GithubStateActionType.SET_ERROR });
@@ -68,7 +67,6 @@ const GithubProvider: React.FC<GithubProviderProps> = ({ children }) => {
         throw new Error("ERROR: Failed to fetch user profile");
       }
       const data: UserDetails = await response.json();
-      console.log(data);
       dispatch({
         type: GithubStateActionType.GET_SELECTED_USER,
         payload: data,
@@ -100,7 +98,6 @@ const GithubProvider: React.FC<GithubProviderProps> = ({ children }) => {
         throw new Error("ERROR: Failed to fetch user repos");
       }
       const data: UserRepo[] = await response.json();
-      console.log(data);
       dispatch({ type: GithubStateActionType.GET_USER_REPOS, payload: data });
     } catch (error) {
       console.error("ERROR: Failed to fetch data", error);
