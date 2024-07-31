@@ -1,14 +1,16 @@
 # Devfinder React
 
+DevFinder is a React application that allows users to search for GitHub profiles, view user details, and explore user repositories. The app leverages the GitHub API for fetching and displaying user data.
+
+
+[View Live Demo](https://devfinder-react-app.netlify.app/)
+
 Homepage
 ![devfinder-preview](https://github.com/user-attachments/assets/90f7bdc5-07ae-4ef7-8e37-0165bdd46645)
 
 Profile Details Page
 ![devfinder-profile](https://github.com/user-attachments/assets/61e6f942-dc57-4761-9799-54595dd70e46)
 
-
-
-DevFinder is a React application that allows users to search for GitHub profiles, view user details, and explore user repositories. The app leverages the GitHub API for fetching and displaying user data.
 
 ## Technologies Used
 
