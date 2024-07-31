@@ -205,6 +205,7 @@ export type GithubAction =
   | GetUserRepos;
 
 export interface ToastServiceContextType {
+  state: toastInitialState;
   addToast: (options: UseToastOptions) => void;
 }
 

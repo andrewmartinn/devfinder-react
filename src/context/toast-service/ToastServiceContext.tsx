@@ -18,7 +18,6 @@ const ToastServiceProvider: React.FC<ToastServiceProviderProps> = ({
   const initialState: toastInitialState = {
     toasts: [],
   };
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [state, dispatch] = useReducer(toastReducer, initialState);
   const chakraToast = useToast();
 
@@ -38,7 +37,7 @@ const ToastServiceProvider: React.FC<ToastServiceProviderProps> = ({
   };
 
   return (
-    <ToastServiceContext.Provider value={{ addToast }}>
+    <ToastServiceContext.Provider value={{ addToast, state }}>
       {children}
     </ToastServiceContext.Provider>
   );
